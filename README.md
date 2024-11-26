@@ -13,7 +13,7 @@ cd SC2-FE
 ```console
 flutter pub get
 ```
-3. 시뮬레이터 실행 혹은 물리적 기기 연결
+3. 시뮬레이터 실행 혹은 물리적 기기 연결<br>
 4. 실행
 ```console
 flutter run
