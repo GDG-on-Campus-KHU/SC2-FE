@@ -8,6 +8,7 @@ import '../utils/model/shelter_model.dart';
 import '../utils/theme/color_manager.dart';
 import '../utils/theme/text_manager.dart';
 import '../utils/location.dart';
+import '../utils/service/shelter_service.dart';
 
 class ShelterScreen extends StatefulWidget {
   const ShelterScreen({super.key});
@@ -17,20 +18,8 @@ class ShelterScreen extends StatefulWidget {
 }
 
 class _ShelterScreenState extends State<ShelterScreen> {
-  final List<Shelter> _dummyShelters = [
-    Shelter(
-      name: 'Central Community Center',
-      address: '123 Main St, Seoul',
-    ),
-    Shelter(
-      name: 'Metro Station Bunker',
-      address: '45 Station Road, Seoul',
-    ),
-    Shelter(
-      name: 'Public Library Basement',
-      address: '67 Book Avenue, Seoul',
-    ),
-  ];
+  final ShelterService _shelterService = ShelterService();
+  List<Shelter> _shelters = [];
 
   final SheetController sheetController = SheetController();
 
@@ -44,6 +33,7 @@ class _ShelterScreenState extends State<ShelterScreen> {
   void initState() {
     super.initState();
     sheetController.addListener(_onSheetChanged);
+    _loadShelters();
     Future<void>.delayed(const Duration(milliseconds: 300), () {
       animateSheet();
       _goToCurrentLocation();
@@ -172,17 +162,17 @@ class _ShelterScreenState extends State<ShelterScreen> {
               ),
             ),
             Text(
-              'Nearest Shelters',
+              '인근 대피소',
               style: TextManager.main23,
             ),
             const SizedBox(height: 28),
             Expanded(
               child: ListView.builder(
-                itemCount: _dummyShelters.length,
+                itemCount: _shelters.length,
                 itemBuilder: (context, index) {
-                  final shelter = _dummyShelters[index];
+                  final shelter = _shelters[index];
                   return shelterCard(
-                    name: shelter.name,
+                    name: shelter.title,
                     address: shelter.address,
                   );
                 },
@@ -216,12 +206,22 @@ class _ShelterScreenState extends State<ShelterScreen> {
               size: 32,
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(name, style: TextManager.main19),
-              Text(address, style: TextManager.sub17),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: TextManager.main19,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  address,
+                  style: TextManager.sub17,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -250,5 +250,12 @@ class _ShelterScreenState extends State<ShelterScreen> {
       setState(() {});
       debugPrint('Error getting location: $e');
     }
+  }
+
+  Future<void> _loadShelters() async {
+    final shelters = await _shelterService.fetchShelters();
+    setState(() {
+      _shelters = shelters;
+    });
   }
 }
