@@ -16,37 +16,24 @@ class InstructionScreen extends StatefulWidget {
 
 class _InstructionScreenState extends State<InstructionScreen> {
   final List<bool> _visibleItems = [];
-  // final disasterType = "Earthquake";
-  List<SafetyInstruction> instructions = [];
+  Future<List<SafetyInstruction>>? _instructionsFuture;
+  bool _animationInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    _fetchAndAnimateInstructions();
+    _instructionsFuture = InstructionService().fetchInstructions();
   }
 
-  Future<void> _fetchAndAnimateInstructions() async {
-    final service = InstructionService();
-    instructions = await service.fetchInstructions();
-    _visibleItems.addAll(List.generate(instructions.length, (_) => false));
-    _animateItems();
-  }
-
-  void _animateItems() async {
-    for (int i = 0; i < _visibleItems.length; i++) {
-      await Future.delayed(const Duration(milliseconds: 300));
-      if (mounted) {
-        setState(() {
-          _visibleItems[i] = true;
-        });
-      }
-    }
+  Future<void> _handleRefresh() async {
+    setState(() {
+      _animationInitialized = false;
+      _instructionsFuture = InstructionService().fetchInstructions();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Example data
-
     return Scaffold(
       backgroundColor: ColorManager.background,
       appBar: AppBar(
@@ -61,9 +48,7 @@ class _InstructionScreenState extends State<InstructionScreen> {
               color: ColorManager.mainText,
               size: 20,
             ),
-            const SizedBox(
-              width: 4,
-            ),
+            const SizedBox(width: 4),
             Text(
               'Disaster Instructions',
               style: TextManager.main19,
@@ -72,32 +57,98 @@ class _InstructionScreenState extends State<InstructionScreen> {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '${instructions[0].safetyCateNm2} 발생 시 행동요령',
-              style: TextManager.main23,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 28),
-            Expanded(
-              child: ListView.builder(
-                itemCount: instructions.length,
-                itemBuilder: (context, index) {
-                  return instructionCard(instructions, index);
-                },
+      body: RefreshIndicator(
+        color: ColorManager.button,
+        backgroundColor: ColorManager.background,
+        onRefresh: _handleRefresh,
+        child: FutureBuilder<List<SafetyInstruction>>(
+          future: _instructionsFuture,
+          builder: (context, AsyncSnapshot<List<SafetyInstruction>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (snapshot.hasError) {
+              return Center(
+                child: Text('Error loading instructions: ${snapshot.error}'),
+              );
+            }
+
+            final instructions = snapshot.data;
+            if (instructions == null || instructions.isEmpty) {
+              return const Center(
+                child: Text('No instructions available'),
+              );
+            }
+
+            if (!_animationInitialized) {
+              _visibleItems.clear();
+              _visibleItems
+                  .addAll(List.generate(instructions.length, (_) => false));
+              _animationInitialized = true;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _animateItems();
+              });
+            }
+
+            return Stack(children: [
+              SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${instructions[0].safetyCateNm2} 발생 시 행동요령',
+                        style: TextManager.main23,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 28),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: instructions.length,
+                        itemBuilder: (context, index) {
+                          return instructionCard(instructions, index);
+                        },
+                      ),
+                      // Divider(
+                      //   color: ColorManager.card,
+                      //   height: 1,
+                      // ),
+                      const SizedBox(height: 68), // 16 + 52
+                    ],
+                  ),
+                ),
               ),
-            ),
-            Divider(
-              color: ColorManager.card,
-              height: 1,
-            ),
-            const SizedBox(height: 16),
-            _buildShelterButton(context),
-          ],
+              Positioned(
+                left: 16,
+                right: 16,
+                bottom: 0,
+                child: Container(
+                  height: 84, // 16 + 52 + 16
+                  decoration: BoxDecoration(
+                    color: ColorManager.background,
+                    border: Border(
+                      top: BorderSide(
+                        color: ColorManager.card,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 16,
+                left: 16,
+                right: 16,
+                child: _buildShelterButton(context),
+              ),
+            ]);
+          },
         ),
       ),
     );
@@ -159,5 +210,16 @@ class _InstructionScreenState extends State<InstructionScreen> {
         ),
       ),
     );
+  }
+
+  void _animateItems() async {
+    for (int i = 0; i < _visibleItems.length; i++) {
+      await Future.delayed(const Duration(milliseconds: 300));
+      if (mounted) {
+        setState(() {
+          _visibleItems[i] = true;
+        });
+      }
+    }
   }
 }
