@@ -73,7 +73,6 @@ class _ShelterScreenState extends State<ShelterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate FAB position based on sheet position
     final bodyHeight = (MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         kToolbarHeight);
@@ -150,6 +149,7 @@ class _ShelterScreenState extends State<ShelterScreen> {
     return Sheet(
       controller: sheetController,
       elevation: 4,
+      backgroundColor: ColorManager.background,
       physics: const SnapSheetPhysics(
         stops: [0.12, 0.5, 1],
         parent: BouncingSheetPhysics(),
@@ -171,7 +171,6 @@ class _ShelterScreenState extends State<ShelterScreen> {
                 ),
               ),
             ),
-            // const SizedBox(height: 12),
             Text(
               'Nearest Shelters',
               style: TextManager.main23,
