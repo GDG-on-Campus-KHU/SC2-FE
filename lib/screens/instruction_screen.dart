@@ -4,6 +4,8 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import '../utils/theme/color_manager.dart';
 import '../utils/theme/text_manager.dart';
+import '../utils/service/instruction_service.dart';
+import '../utils/model/instruction_model.dart';
 
 class InstructionScreen extends StatefulWidget {
   const InstructionScreen({super.key});
@@ -14,20 +16,18 @@ class InstructionScreen extends StatefulWidget {
 
 class _InstructionScreenState extends State<InstructionScreen> {
   final List<bool> _visibleItems = [];
-  final disasterType = "Earthquake";
-  final instructions = [
-    "Drop to the ground and take cover under a sturdy desk or table",
-    "Stay away from glass, windows, outside doors and walls",
-    "Stay inside until the shaking stops",
-    "Be prepared for aftershocks",
-    "If you're in bed, stay there and protect your head with a pillow",
-    "If you're outdoors, stay in the open away from buildings",
-    "If you're in a vehicle, stop in a safe place away from buildings"
-  ];
+  // final disasterType = "Earthquake";
+  List<SafetyInstruction> instructions = [];
 
   @override
   void initState() {
     super.initState();
+    _fetchAndAnimateInstructions();
+  }
+
+  Future<void> _fetchAndAnimateInstructions() async {
+    final service = InstructionService();
+    instructions = await service.fetchInstructions();
     _visibleItems.addAll(List.generate(instructions.length, (_) => false));
     _animateItems();
   }
@@ -77,15 +77,12 @@ class _InstructionScreenState extends State<InstructionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Disaster Type Title
             Text(
-              'What to do in a(n) $disasterType',
+              '${instructions[0].safetyCateNm2} 발생 시 행동요령',
               style: TextManager.main23,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 28),
-
-            // Instructions List
             Expanded(
               child: ListView.builder(
                 itemCount: instructions.length,
@@ -94,7 +91,6 @@ class _InstructionScreenState extends State<InstructionScreen> {
                 },
               ),
             ),
-            // const SizedBox(height: 28),
             Divider(
               color: ColorManager.card,
               height: 1,
@@ -122,14 +118,14 @@ class _InstructionScreenState extends State<InstructionScreen> {
           ),
         ),
         child: Text(
-          'Show me shelter routes',
-          style: TextManager.invert17,
+          '가까운 대피소를 앱에서 확인하세요',
+          style: TextManager.invert19,
         ),
       ),
     );
   }
 
-  Widget instructionCard(List<String> instructions, int index) {
+  Widget instructionCard(List<SafetyInstruction> instructions, int index) {
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 500),
       opacity: _visibleItems[index] ? 1.0 : 0.0,
@@ -146,9 +142,19 @@ class _InstructionScreenState extends State<InstructionScreen> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Text(
-            instructions[index],
-            style: TextManager.sub17,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                instructions[index].safetyCateNm3,
+                style: TextManager.main19,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                instructions[index].actRmks ?? '',
+                style: TextManager.sub17,
+              ),
+            ],
           ),
         ),
       ),
