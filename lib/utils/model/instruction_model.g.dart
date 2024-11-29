@@ -6,9 +6,9 @@ part of 'instruction_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SafetyInstructionImpl _$$SafetyInstructionImplFromJson(
+_$InstructionModelImpl _$$InstructionModelImplFromJson(
         Map<String, dynamic> json) =>
-    _$SafetyInstructionImpl(
+    _$InstructionModelImpl(
       safetyCateNm2: json['safety_cate_nm2'] as String,
       actRmks: json['actRmks'] as String?,
       safetyCateNm3: json['safety_cate_nm3'] as String,
@@ -20,8 +20,8 @@ _$SafetyInstructionImpl _$$SafetyInstructionImplFromJson(
       safetyCateNm1: json['safety_cate_nm1'] as String,
     );
 
-Map<String, dynamic> _$$SafetyInstructionImplToJson(
-        _$SafetyInstructionImpl instance) =>
+Map<String, dynamic> _$$InstructionModelImplToJson(
+        _$InstructionModelImpl instance) =>
     <String, dynamic>{
       'safety_cate_nm2': instance.safetyCateNm2,
       'actRmks': instance.actRmks,

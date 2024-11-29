@@ -4,13 +4,13 @@ part 'route_model.freezed.dart';
 part 'route_model.g.dart';
 
 @freezed
-class RouteResponse with _$RouteResponse {
-  const factory RouteResponse({
+class RouteModel with _$RouteModel {
+  const factory RouteModel({
     required List<double> start,
     required List<double> goal,
     required List<List<double>> path,
-  }) = _RouteResponse;
+  }) = _RouteModel;
 
-  factory RouteResponse.fromJson(Map<String, dynamic> json) =>
-      _$RouteResponseFromJson(json);
+  factory RouteModel.fromJson(Map<String, dynamic> json) =>
+      _$RouteModelFromJson(json);
 }

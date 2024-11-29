@@ -6,8 +6,8 @@ part of 'route_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$RouteResponseImpl _$$RouteResponseImplFromJson(Map<String, dynamic> json) =>
-    _$RouteResponseImpl(
+_$RouteModelImpl _$$RouteModelImplFromJson(Map<String, dynamic> json) =>
+    _$RouteModelImpl(
       start: (json['start'] as List<dynamic>)
           .map((e) => (e as num).toDouble())
           .toList(),
@@ -20,7 +20,7 @@ _$RouteResponseImpl _$$RouteResponseImplFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$RouteResponseImplToJson(_$RouteResponseImpl instance) =>
+Map<String, dynamic> _$$RouteModelImplToJson(_$RouteModelImpl instance) =>
     <String, dynamic>{
       'start': instance.start,
       'goal': instance.goal,

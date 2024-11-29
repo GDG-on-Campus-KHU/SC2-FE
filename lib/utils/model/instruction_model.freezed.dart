@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-SafetyInstruction _$SafetyInstructionFromJson(Map<String, dynamic> json) {
-  return _SafetyInstruction.fromJson(json);
+InstructionModel _$InstructionModelFromJson(Map<String, dynamic> json) {
+  return _InstructionModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$SafetyInstruction {
+mixin _$InstructionModel {
   @JsonKey(name: 'safety_cate_nm2')
   String get safetyCateNm2 => throw _privateConstructorUsedError;
   @JsonKey(name: 'actRmks')
@@ -39,21 +39,21 @@ mixin _$SafetyInstruction {
   @JsonKey(name: 'safety_cate_nm1')
   String get safetyCateNm1 => throw _privateConstructorUsedError;
 
-  /// Serializes this SafetyInstruction to a JSON map.
+  /// Serializes this InstructionModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of SafetyInstruction
+  /// Create a copy of InstructionModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $SafetyInstructionCopyWith<SafetyInstruction> get copyWith =>
+  $InstructionModelCopyWith<InstructionModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $SafetyInstructionCopyWith<$Res> {
-  factory $SafetyInstructionCopyWith(
-          SafetyInstruction value, $Res Function(SafetyInstruction) then) =
-      _$SafetyInstructionCopyWithImpl<$Res, SafetyInstruction>;
+abstract class $InstructionModelCopyWith<$Res> {
+  factory $InstructionModelCopyWith(
+          InstructionModel value, $Res Function(InstructionModel) then) =
+      _$InstructionModelCopyWithImpl<$Res, InstructionModel>;
   @useResult
   $Res call(
       {@JsonKey(name: 'safety_cate_nm2') String safetyCateNm2,
@@ -68,16 +68,16 @@ abstract class $SafetyInstructionCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SafetyInstructionCopyWithImpl<$Res, $Val extends SafetyInstruction>
-    implements $SafetyInstructionCopyWith<$Res> {
-  _$SafetyInstructionCopyWithImpl(this._value, this._then);
+class _$InstructionModelCopyWithImpl<$Res, $Val extends InstructionModel>
+    implements $InstructionModelCopyWith<$Res> {
+  _$InstructionModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of SafetyInstruction
+  /// Create a copy of InstructionModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -134,11 +134,11 @@ class _$SafetyInstructionCopyWithImpl<$Res, $Val extends SafetyInstruction>
 }
 
 /// @nodoc
-abstract class _$$SafetyInstructionImplCopyWith<$Res>
-    implements $SafetyInstructionCopyWith<$Res> {
-  factory _$$SafetyInstructionImplCopyWith(_$SafetyInstructionImpl value,
-          $Res Function(_$SafetyInstructionImpl) then) =
-      __$$SafetyInstructionImplCopyWithImpl<$Res>;
+abstract class _$$InstructionModelImplCopyWith<$Res>
+    implements $InstructionModelCopyWith<$Res> {
+  factory _$$InstructionModelImplCopyWith(_$InstructionModelImpl value,
+          $Res Function(_$InstructionModelImpl) then) =
+      __$$InstructionModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -154,14 +154,14 @@ abstract class _$$SafetyInstructionImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$SafetyInstructionImplCopyWithImpl<$Res>
-    extends _$SafetyInstructionCopyWithImpl<$Res, _$SafetyInstructionImpl>
-    implements _$$SafetyInstructionImplCopyWith<$Res> {
-  __$$SafetyInstructionImplCopyWithImpl(_$SafetyInstructionImpl _value,
-      $Res Function(_$SafetyInstructionImpl) _then)
+class __$$InstructionModelImplCopyWithImpl<$Res>
+    extends _$InstructionModelCopyWithImpl<$Res, _$InstructionModelImpl>
+    implements _$$InstructionModelImplCopyWith<$Res> {
+  __$$InstructionModelImplCopyWithImpl(_$InstructionModelImpl _value,
+      $Res Function(_$InstructionModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SafetyInstruction
+  /// Create a copy of InstructionModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -176,7 +176,7 @@ class __$$SafetyInstructionImplCopyWithImpl<$Res>
     Object? contentsUrl = freezed,
     Object? safetyCateNm1 = null,
   }) {
-    return _then(_$SafetyInstructionImpl(
+    return _then(_$InstructionModelImpl(
       safetyCateNm2: null == safetyCateNm2
           ? _value.safetyCateNm2
           : safetyCateNm2 // ignore: cast_nullable_to_non_nullable
@@ -219,8 +219,8 @@ class __$$SafetyInstructionImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SafetyInstructionImpl implements _SafetyInstruction {
-  const _$SafetyInstructionImpl(
+class _$InstructionModelImpl implements _InstructionModel {
+  const _$InstructionModelImpl(
       {@JsonKey(name: 'safety_cate_nm2') required this.safetyCateNm2,
       @JsonKey(name: 'actRmks') this.actRmks,
       @JsonKey(name: 'safety_cate_nm3') required this.safetyCateNm3,
@@ -231,8 +231,8 @@ class _$SafetyInstructionImpl implements _SafetyInstruction {
       @JsonKey(name: 'contentsUrl') this.contentsUrl,
       @JsonKey(name: 'safety_cate_nm1') required this.safetyCateNm1});
 
-  factory _$SafetyInstructionImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SafetyInstructionImplFromJson(json);
+  factory _$InstructionModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$InstructionModelImplFromJson(json);
 
   @override
   @JsonKey(name: 'safety_cate_nm2')
@@ -264,14 +264,14 @@ class _$SafetyInstructionImpl implements _SafetyInstruction {
 
   @override
   String toString() {
-    return 'SafetyInstruction(safetyCateNm2: $safetyCateNm2, actRmks: $actRmks, safetyCateNm3: $safetyCateNm3, safetyCate4: $safetyCate4, safetyCate3: $safetyCate3, safetyCate2: $safetyCate2, safetyCate1: $safetyCate1, contentsUrl: $contentsUrl, safetyCateNm1: $safetyCateNm1)';
+    return 'InstructionModel(safetyCateNm2: $safetyCateNm2, actRmks: $actRmks, safetyCateNm3: $safetyCateNm3, safetyCate4: $safetyCate4, safetyCate3: $safetyCate3, safetyCate2: $safetyCate2, safetyCate1: $safetyCate1, contentsUrl: $contentsUrl, safetyCateNm1: $safetyCateNm1)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SafetyInstructionImpl &&
+            other is _$InstructionModelImpl &&
             (identical(other.safetyCateNm2, safetyCateNm2) ||
                 other.safetyCateNm2 == safetyCateNm2) &&
             (identical(other.actRmks, actRmks) || other.actRmks == actRmks) &&
@@ -305,25 +305,25 @@ class _$SafetyInstructionImpl implements _SafetyInstruction {
       contentsUrl,
       safetyCateNm1);
 
-  /// Create a copy of SafetyInstruction
+  /// Create a copy of InstructionModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$SafetyInstructionImplCopyWith<_$SafetyInstructionImpl> get copyWith =>
-      __$$SafetyInstructionImplCopyWithImpl<_$SafetyInstructionImpl>(
+  _$$InstructionModelImplCopyWith<_$InstructionModelImpl> get copyWith =>
+      __$$InstructionModelImplCopyWithImpl<_$InstructionModelImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SafetyInstructionImplToJson(
+    return _$$InstructionModelImplToJson(
       this,
     );
   }
 }
 
-abstract class _SafetyInstruction implements SafetyInstruction {
-  const factory _SafetyInstruction(
+abstract class _InstructionModel implements InstructionModel {
+  const factory _InstructionModel(
       {@JsonKey(name: 'safety_cate_nm2') required final String safetyCateNm2,
       @JsonKey(name: 'actRmks') final String? actRmks,
       @JsonKey(name: 'safety_cate_nm3') required final String safetyCateNm3,
@@ -333,10 +333,10 @@ abstract class _SafetyInstruction implements SafetyInstruction {
       @JsonKey(name: 'safety_cate1') required final String safetyCate1,
       @JsonKey(name: 'contentsUrl') final String? contentsUrl,
       @JsonKey(name: 'safety_cate_nm1')
-      required final String safetyCateNm1}) = _$SafetyInstructionImpl;
+      required final String safetyCateNm1}) = _$InstructionModelImpl;
 
-  factory _SafetyInstruction.fromJson(Map<String, dynamic> json) =
-      _$SafetyInstructionImpl.fromJson;
+  factory _InstructionModel.fromJson(Map<String, dynamic> json) =
+      _$InstructionModelImpl.fromJson;
 
   @override
   @JsonKey(name: 'safety_cate_nm2')
@@ -366,10 +366,10 @@ abstract class _SafetyInstruction implements SafetyInstruction {
   @JsonKey(name: 'safety_cate_nm1')
   String get safetyCateNm1;
 
-  /// Create a copy of SafetyInstruction
+  /// Create a copy of InstructionModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SafetyInstructionImplCopyWith<_$SafetyInstructionImpl> get copyWith =>
+  _$$InstructionModelImplCopyWith<_$InstructionModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

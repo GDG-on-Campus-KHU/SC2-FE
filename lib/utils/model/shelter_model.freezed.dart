@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-Shelter _$ShelterFromJson(Map<String, dynamic> json) {
-  return _Shelter.fromJson(json);
+ShelterModel _$ShelterModelFromJson(Map<String, dynamic> json) {
+  return _ShelterModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Shelter {
+mixin _$ShelterModel {
   String get title => throw _privateConstructorUsedError;
   String get category => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
@@ -29,19 +29,21 @@ mixin _$Shelter {
   String get mapx => throw _privateConstructorUsedError;
   String get mapy => throw _privateConstructorUsedError;
 
-  /// Serializes this Shelter to a JSON map.
+  /// Serializes this ShelterModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of Shelter
+  /// Create a copy of ShelterModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ShelterCopyWith<Shelter> get copyWith => throw _privateConstructorUsedError;
+  $ShelterModelCopyWith<ShelterModel> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ShelterCopyWith<$Res> {
-  factory $ShelterCopyWith(Shelter value, $Res Function(Shelter) then) =
-      _$ShelterCopyWithImpl<$Res, Shelter>;
+abstract class $ShelterModelCopyWith<$Res> {
+  factory $ShelterModelCopyWith(
+          ShelterModel value, $Res Function(ShelterModel) then) =
+      _$ShelterModelCopyWithImpl<$Res, ShelterModel>;
   @useResult
   $Res call(
       {String title,
@@ -54,16 +56,16 @@ abstract class $ShelterCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ShelterCopyWithImpl<$Res, $Val extends Shelter>
-    implements $ShelterCopyWith<$Res> {
-  _$ShelterCopyWithImpl(this._value, this._then);
+class _$ShelterModelCopyWithImpl<$Res, $Val extends ShelterModel>
+    implements $ShelterModelCopyWith<$Res> {
+  _$ShelterModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Shelter
+  /// Create a copy of ShelterModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -110,10 +112,11 @@ class _$ShelterCopyWithImpl<$Res, $Val extends Shelter>
 }
 
 /// @nodoc
-abstract class _$$ShelterImplCopyWith<$Res> implements $ShelterCopyWith<$Res> {
-  factory _$$ShelterImplCopyWith(
-          _$ShelterImpl value, $Res Function(_$ShelterImpl) then) =
-      __$$ShelterImplCopyWithImpl<$Res>;
+abstract class _$$ShelterModelImplCopyWith<$Res>
+    implements $ShelterModelCopyWith<$Res> {
+  factory _$$ShelterModelImplCopyWith(
+          _$ShelterModelImpl value, $Res Function(_$ShelterModelImpl) then) =
+      __$$ShelterModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -127,14 +130,14 @@ abstract class _$$ShelterImplCopyWith<$Res> implements $ShelterCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$ShelterImplCopyWithImpl<$Res>
-    extends _$ShelterCopyWithImpl<$Res, _$ShelterImpl>
-    implements _$$ShelterImplCopyWith<$Res> {
-  __$$ShelterImplCopyWithImpl(
-      _$ShelterImpl _value, $Res Function(_$ShelterImpl) _then)
+class __$$ShelterModelImplCopyWithImpl<$Res>
+    extends _$ShelterModelCopyWithImpl<$Res, _$ShelterModelImpl>
+    implements _$$ShelterModelImplCopyWith<$Res> {
+  __$$ShelterModelImplCopyWithImpl(
+      _$ShelterModelImpl _value, $Res Function(_$ShelterModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Shelter
+  /// Create a copy of ShelterModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -147,7 +150,7 @@ class __$$ShelterImplCopyWithImpl<$Res>
     Object? mapx = null,
     Object? mapy = null,
   }) {
-    return _then(_$ShelterImpl(
+    return _then(_$ShelterModelImpl(
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -182,8 +185,8 @@ class __$$ShelterImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ShelterImpl implements _Shelter {
-  const _$ShelterImpl(
+class _$ShelterModelImpl implements _ShelterModel {
+  const _$ShelterModelImpl(
       {required this.title,
       required this.category,
       required this.description,
@@ -192,8 +195,8 @@ class _$ShelterImpl implements _Shelter {
       required this.mapx,
       required this.mapy});
 
-  factory _$ShelterImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ShelterImplFromJson(json);
+  factory _$ShelterModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ShelterModelImplFromJson(json);
 
   @override
   final String title;
@@ -213,14 +216,14 @@ class _$ShelterImpl implements _Shelter {
 
   @override
   String toString() {
-    return 'Shelter(title: $title, category: $category, description: $description, telephone: $telephone, address: $address, mapx: $mapx, mapy: $mapy)';
+    return 'ShelterModel(title: $title, category: $category, description: $description, telephone: $telephone, address: $address, mapx: $mapx, mapy: $mapy)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ShelterImpl &&
+            other is _$ShelterModelImpl &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.category, category) ||
                 other.category == category) &&
@@ -238,33 +241,34 @@ class _$ShelterImpl implements _Shelter {
   int get hashCode => Object.hash(runtimeType, title, category, description,
       telephone, address, mapx, mapy);
 
-  /// Create a copy of Shelter
+  /// Create a copy of ShelterModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ShelterImplCopyWith<_$ShelterImpl> get copyWith =>
-      __$$ShelterImplCopyWithImpl<_$ShelterImpl>(this, _$identity);
+  _$$ShelterModelImplCopyWith<_$ShelterModelImpl> get copyWith =>
+      __$$ShelterModelImplCopyWithImpl<_$ShelterModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ShelterImplToJson(
+    return _$$ShelterModelImplToJson(
       this,
     );
   }
 }
 
-abstract class _Shelter implements Shelter {
-  const factory _Shelter(
+abstract class _ShelterModel implements ShelterModel {
+  const factory _ShelterModel(
       {required final String title,
       required final String category,
       required final String description,
       required final String telephone,
       @JsonKey(name: 'roadAddress') required final String address,
       required final String mapx,
-      required final String mapy}) = _$ShelterImpl;
+      required final String mapy}) = _$ShelterModelImpl;
 
-  factory _Shelter.fromJson(Map<String, dynamic> json) = _$ShelterImpl.fromJson;
+  factory _ShelterModel.fromJson(Map<String, dynamic> json) =
+      _$ShelterModelImpl.fromJson;
 
   @override
   String get title;
@@ -282,10 +286,10 @@ abstract class _Shelter implements Shelter {
   @override
   String get mapy;
 
-  /// Create a copy of Shelter
+  /// Create a copy of ShelterModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ShelterImplCopyWith<_$ShelterImpl> get copyWith =>
+  _$$ShelterModelImplCopyWith<_$ShelterModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

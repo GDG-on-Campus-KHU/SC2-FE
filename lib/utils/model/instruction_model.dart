@@ -4,8 +4,8 @@ part 'instruction_model.freezed.dart';
 part 'instruction_model.g.dart';
 
 @freezed
-class SafetyInstruction with _$SafetyInstruction {
-  const factory SafetyInstruction({
+class InstructionModel with _$InstructionModel {
+  const factory InstructionModel({
     @JsonKey(name: 'safety_cate_nm2') required String safetyCateNm2,
     @JsonKey(name: 'actRmks') String? actRmks,
     @JsonKey(name: 'safety_cate_nm3') required String safetyCateNm3,
@@ -15,8 +15,8 @@ class SafetyInstruction with _$SafetyInstruction {
     @JsonKey(name: 'safety_cate1') required String safetyCate1,
     @JsonKey(name: 'contentsUrl') String? contentsUrl,
     @JsonKey(name: 'safety_cate_nm1') required String safetyCateNm1,
-  }) = _SafetyInstruction;
+  }) = _InstructionModel;
 
-  factory SafetyInstruction.fromJson(Map<String, dynamic> json) =>
-      _$SafetyInstructionFromJson(json);
+  factory InstructionModel.fromJson(Map<String, dynamic> json) =>
+      _$InstructionModelFromJson(json);
 }
