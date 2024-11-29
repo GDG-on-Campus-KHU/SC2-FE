@@ -36,12 +36,16 @@ class _ShelterScreenState extends State<ShelterScreen> {
 
   LatLng? _currentLocation;
 
+  Future<List<ShelterModel>>? _sheltersFuture;
+
   @override
   void initState() {
     super.initState();
     sheetController.addListener(_onSheetChanged);
+    _sheltersFuture = _shelterService.fetchShelters('서울 역삼동 대피소');
+
     Future<void>.delayed(const Duration(milliseconds: 300), () {
-      animateSheet();
+      animateSheet(0.5);
       _goToCurrentLocation();
     });
   }
@@ -52,9 +56,9 @@ class _ShelterScreenState extends State<ShelterScreen> {
     });
   }
 
-  void animateSheet() {
+  void animateSheet(double stop) {
     sheetController.relativeAnimateTo(
-      0.5,
+      stop,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
@@ -164,7 +168,7 @@ class _ShelterScreenState extends State<ShelterScreen> {
               child: Container(
                 width: 32,
                 height: 4,
-                margin: const EdgeInsets.only(top: 8, bottom: 16),
+                margin: const EdgeInsets.only(top: 8, bottom: 8),
                 decoration: BoxDecoration(
                   color: ColorManager.card,
                   borderRadius: BorderRadius.circular(2),
@@ -175,17 +179,17 @@ class _ShelterScreenState extends State<ShelterScreen> {
               '인근 대피소',
               style: TextManager.main23,
             ),
-            const SizedBox(height: 48),
+            const SizedBox(height: 28),
             Expanded(
               child: FutureBuilder<List<ShelterModel>>(
-                future: _shelterService.fetchShelters(
-                    '서울 역삼동 대피소'), // modify search query in the future, hard coding it for now
+                future: _sheltersFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
                   if (snapshot.hasError) {
+                    debugPrint('Shelter fetch error: ${snapshot.error}');
                     return Center(
                       child: Text(
                         'Error loading shelters: ${snapshot.error}',
@@ -299,12 +303,19 @@ class _ShelterScreenState extends State<ShelterScreen> {
     required String name,
     required String address,
   }) async {
+    animateSheet(0.12);
+
     if (_currentLocation == null) {
       debugPrint('Current location not available');
       return;
     }
 
     try {
+      debugPrint('Fetching route with:');
+      debugPrint(
+          'Start location: ${_currentLocation!.latitude}, ${_currentLocation!.longitude}');
+      debugPrint('Destination name: $name');
+
       final RouteModel route = await _routeService.getRoute(
         start: _currentLocation!,
         destinationName: name,
@@ -313,11 +324,12 @@ class _ShelterScreenState extends State<ShelterScreen> {
       await _drawRoute(route);
     } catch (e) {
       debugPrint('Error fetching and drawing route: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to load route. Please try again.'),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('Failed to load route: $e'),
+      //     duration: const Duration(seconds: 3),
+      //   ),
+      // );
     }
   }
 
