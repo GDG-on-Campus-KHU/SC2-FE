@@ -15,16 +15,26 @@ class RouteService {
       final encodedGoal = Uri.encodeComponent(destinationName);
 
       final url =
-          '$_baseUrl/map/navigation?start=$startCoord&goal=$encodedGoal';
+          '$_baseUrl/map/navigation?start=$startCoord&location=$encodedGoal';
+
+      // print('Requesting route from URL: $url');
 
       final response = await http.get(Uri.parse(url));
 
+      // print('Response status: ${response.statusCode}');
+      // print('Response body: ${response.body}');
+
       if (response.statusCode != 200) {
-        throw Exception('Failed to fetch route: ${response.statusCode}');
+        throw Exception(
+            'Failed to fetch route: ${response.statusCode} - ${response.body}');
       }
 
-      return RouteModel.fromJson(jsonDecode(response.body));
+      final decodedResponse = jsonDecode(response.body);
+      // print('Decoded response: $decodedResponse');
+
+      return RouteModel.fromJson(decodedResponse);
     } catch (e) {
+      // print('Error in getRoute: $e');
       throw Exception('Error fetching route: $e');
     }
   }
