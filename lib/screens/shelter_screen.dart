@@ -6,10 +6,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:math' show min, max;
 
 import '../utils/model/shelter_model.dart';
+import '../utils/service/route_service.dart';
 import '../utils/theme/color_manager.dart';
 import '../utils/theme/text_manager.dart';
 import '../utils/location.dart';
 import '../utils/service/shelter_service.dart';
+import '../utils/model/route_model.dart';
 
 class ShelterScreen extends StatefulWidget {
   const ShelterScreen({super.key});
@@ -19,8 +21,9 @@ class ShelterScreen extends StatefulWidget {
 }
 
 class _ShelterScreenState extends State<ShelterScreen> {
+  final RouteService _routeService = RouteService();
   final ShelterService _shelterService = ShelterService();
-  List<Shelter> _shelters = [];
+  List<ShelterModel> _shelters = [];
 
   final SheetController sheetController = SheetController();
 
@@ -31,6 +34,8 @@ class _ShelterScreenState extends State<ShelterScreen> {
   double _sheetPosition = 0.5;
 
   final Set<Polyline> _polylines = {};
+
+  LatLng? _currentLocation;
 
   @override
   void initState() {
@@ -196,7 +201,7 @@ class _ShelterScreenState extends State<ShelterScreen> {
     required String address,
   }) {
     return GestureDetector(
-      onTap: () => _fetchAndDrawRoute(),
+      onTap: () => _fetchAndDrawRoute(name: name, address: address),
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         child: Row(
@@ -241,8 +246,9 @@ class _ShelterScreenState extends State<ShelterScreen> {
   Future<void> _goToCurrentLocation() async {
     try {
       final position = await determineLocation();
+      _currentLocation = LatLng(position.latitude, position.longitude);
       _initialPosition = CameraPosition(
-        target: LatLng(position.latitude, position.longitude),
+        target: _currentLocation!,
         zoom: 15,
       );
 
@@ -252,9 +258,9 @@ class _ShelterScreenState extends State<ShelterScreen> {
         CameraUpdate.newCameraPosition(_initialPosition!),
       );
     } catch (e) {
-      // If location fails, fall back to Seoul coordinates
+      // If location fails, fall back to Gangnam station coordinates
       _initialPosition = const CameraPosition(
-        target: LatLng(37.5665, 126.9780), // Seoul coordinates
+        target: LatLng(37.497968, 127.027618), // Gangnam station coordinates
         zoom: 15,
       );
       setState(() {});
@@ -269,58 +275,68 @@ class _ShelterScreenState extends State<ShelterScreen> {
     });
   }
 
-  Future<void> _fetchAndDrawRoute() async {
-    try {
-      // TODO: Replace with actual API call
-      final response = {
-        "start": [127.027618, 37.497968],
-        "goal": [127.0646402, 37.2497394],
-        "path": [
-          [127.0583539, 37.248289],
-          [127.0585089, 37.3481931],
-          [127.058517, 37.248158]
-        ]
-      };
-
-      // Create complete route including start, path, and goal
-      final List<LatLng> polylineCoordinates = [
-        // Add start point
-        LatLng(
-          (response['start'] as List)[1] as double,
-          (response['start'] as List)[0] as double,
-        ),
-        // Add path points (stopovers)
-        ...(response['path'] as List).map((point) => LatLng(
-              point[1] as double,
-              point[0] as double,
-            )),
-        // Add goal point
-        LatLng(
-          (response['goal'] as List)[1] as double,
-          (response['goal'] as List)[0] as double,
-        ),
-      ];
-
-      final Polyline polyline = Polyline(
-        polylineId: const PolylineId('route'),
-        color: ColorManager.button,
-        points: polylineCoordinates,
-        width: 4,
-      );
-
-      setState(() {
-        _polylines.clear();
-        _polylines.add(polyline);
-      });
-
-      // Animate camera to show the route
-      final LatLngBounds bounds = _getBounds(polylineCoordinates);
-      await mapController?.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, 50),
-      );
-    } catch (e) {
-      debugPrint('Error drawing route: $e');
+  Future<void> _fetchAndDrawRoute({
+    required String name,
+    required String address,
+  }) async {
+    if (_currentLocation == null) {
+      debugPrint('Current location not available');
+      return;
     }
+
+    try {
+      final RouteModel route = await _routeService.getRoute(
+        start: _currentLocation!,
+        destinationName: name,
+      );
+
+      await _drawRoute(route);
+    } catch (e) {
+      debugPrint('Error fetching and drawing route: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to load route. Please try again.'),
+        ),
+      );
+    }
+  }
+
+  Future<void> _drawRoute(RouteModel routeData) async {
+    final List<LatLng> polylineCoordinates = [
+      // Add start point
+      LatLng(
+        routeData.start[1],
+        routeData.start[0],
+      ),
+      // Add path points
+      ...routeData.path.map((point) => LatLng(
+            point[1],
+            point[0],
+          )),
+      // Add goal point
+      LatLng(
+        routeData.goal[1],
+        routeData.goal[0],
+      ),
+    ];
+
+    final Polyline polyline = Polyline(
+      polylineId: const PolylineId('route'),
+      color: ColorManager.button,
+      points: polylineCoordinates,
+      width: 4,
+    );
+
+    setState(() {
+      _polylines.clear();
+      _polylines.add(polyline);
+    });
+
+    // Animate camera to show the route
+    final bounds = _getBounds(polylineCoordinates);
+    await mapController?.animateCamera(
+      CameraUpdate.newLatLngBounds(bounds, 50),
+    );
   }
 
   LatLngBounds _getBounds(List<LatLng> coordinates) {
