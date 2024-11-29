@@ -3,7 +3,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import '../model/shelter_model.dart';
 
 class ShelterService {
-  Future<List<Shelter>> fetchShelters() async {
+  Future<List<ShelterModel>> fetchShelters() async {
     try {
       final String response =
           await rootBundle.loadString('assets/dummy/shelter.json');
@@ -15,8 +15,9 @@ class ShelterService {
       }
 
       final sheltersList = data['items'] as List;
-      List<Shelter> shelters =
-          sheltersList.map((shelter) => Shelter.fromJson(shelter)).toList();
+      List<ShelterModel> shelters = sheltersList
+          .map((shelter) => ShelterModel.fromJson(shelter))
+          .toList();
 
       return shelters;
     } catch (e, stackTrace) {

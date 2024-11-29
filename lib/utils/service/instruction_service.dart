@@ -3,7 +3,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import '../model/instruction_model.dart';
 
 class InstructionService {
-  Future<List<SafetyInstruction>> fetchInstructions() async {
+  Future<List<InstructionModel>> fetchInstructions() async {
     try {
       // print('Fetching instructions...');
       final String response =
@@ -21,9 +21,9 @@ class InstructionService {
       final instructionsList = data['행동요령'] as List;
       // print('Instructions list length: ${instructionsList.length}');
 
-      List<SafetyInstruction> instructions = instructionsList
+      List<InstructionModel> instructions = instructionsList
           .where((instruction) => instruction['actRmks'] != null)
-          .map((instruction) => SafetyInstruction.fromJson(instruction))
+          .map((instruction) => InstructionModel.fromJson(instruction))
           .toList();
 
       // print('Filtered instructions length: ${instructions.length}');

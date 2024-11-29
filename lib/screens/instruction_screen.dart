@@ -16,7 +16,7 @@ class InstructionScreen extends StatefulWidget {
 
 class _InstructionScreenState extends State<InstructionScreen> {
   final List<bool> _visibleItems = [];
-  Future<List<SafetyInstruction>>? _instructionsFuture;
+  Future<List<InstructionModel>>? _instructionsFuture;
   bool _animationInitialized = false;
 
   @override
@@ -61,9 +61,9 @@ class _InstructionScreenState extends State<InstructionScreen> {
         color: ColorManager.button,
         backgroundColor: ColorManager.background,
         onRefresh: _handleRefresh,
-        child: FutureBuilder<List<SafetyInstruction>>(
+        child: FutureBuilder<List<InstructionModel>>(
           future: _instructionsFuture,
-          builder: (context, AsyncSnapshot<List<SafetyInstruction>> snapshot) {
+          builder: (context, AsyncSnapshot<List<InstructionModel>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -176,7 +176,7 @@ class _InstructionScreenState extends State<InstructionScreen> {
     );
   }
 
-  Widget instructionCard(List<SafetyInstruction> instructions, int index) {
+  Widget instructionCard(List<InstructionModel> instructions, int index) {
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 500),
       opacity: _visibleItems[index] ? 1.0 : 0.0,
