@@ -1,4 +1,4 @@
-package com.example.gdg_sprint
+package jeongwon.dev.gdg_sprint
 
 import io.flutter.embedding.android.FlutterActivity
 
