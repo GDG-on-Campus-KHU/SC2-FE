@@ -7,12 +7,7 @@ part 'shelter_model.g.dart';
 class ShelterModel with _$ShelterModel {
   const factory ShelterModel({
     required String title,
-    required String category,
-    required String description,
-    required String telephone,
     @JsonKey(name: 'roadAddress') required String address,
-    required String mapx,
-    required String mapy,
   }) = _ShelterModel;
 
   factory ShelterModel.fromJson(Map<String, dynamic> json) =>

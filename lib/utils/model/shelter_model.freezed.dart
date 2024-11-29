@@ -21,13 +21,8 @@ ShelterModel _$ShelterModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ShelterModel {
   String get title => throw _privateConstructorUsedError;
-  String get category => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
-  String get telephone => throw _privateConstructorUsedError;
   @JsonKey(name: 'roadAddress')
   String get address => throw _privateConstructorUsedError;
-  String get mapx => throw _privateConstructorUsedError;
-  String get mapy => throw _privateConstructorUsedError;
 
   /// Serializes this ShelterModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,14 +40,7 @@ abstract class $ShelterModelCopyWith<$Res> {
           ShelterModel value, $Res Function(ShelterModel) then) =
       _$ShelterModelCopyWithImpl<$Res, ShelterModel>;
   @useResult
-  $Res call(
-      {String title,
-      String category,
-      String description,
-      String telephone,
-      @JsonKey(name: 'roadAddress') String address,
-      String mapx,
-      String mapy});
+  $Res call({String title, @JsonKey(name: 'roadAddress') String address});
 }
 
 /// @nodoc
@@ -71,41 +59,16 @@ class _$ShelterModelCopyWithImpl<$Res, $Val extends ShelterModel>
   @override
   $Res call({
     Object? title = null,
-    Object? category = null,
-    Object? description = null,
-    Object? telephone = null,
     Object? address = null,
-    Object? mapx = null,
-    Object? mapy = null,
   }) {
     return _then(_value.copyWith(
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      category: null == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      telephone: null == telephone
-          ? _value.telephone
-          : telephone // ignore: cast_nullable_to_non_nullable
-              as String,
       address: null == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
-              as String,
-      mapx: null == mapx
-          ? _value.mapx
-          : mapx // ignore: cast_nullable_to_non_nullable
-              as String,
-      mapy: null == mapy
-          ? _value.mapy
-          : mapy // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -119,14 +82,7 @@ abstract class _$$ShelterModelImplCopyWith<$Res>
       __$$ShelterModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String title,
-      String category,
-      String description,
-      String telephone,
-      @JsonKey(name: 'roadAddress') String address,
-      String mapx,
-      String mapy});
+  $Res call({String title, @JsonKey(name: 'roadAddress') String address});
 }
 
 /// @nodoc
@@ -143,41 +99,16 @@ class __$$ShelterModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? title = null,
-    Object? category = null,
-    Object? description = null,
-    Object? telephone = null,
     Object? address = null,
-    Object? mapx = null,
-    Object? mapy = null,
   }) {
     return _then(_$ShelterModelImpl(
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      category: null == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      telephone: null == telephone
-          ? _value.telephone
-          : telephone // ignore: cast_nullable_to_non_nullable
-              as String,
       address: null == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
-              as String,
-      mapx: null == mapx
-          ? _value.mapx
-          : mapx // ignore: cast_nullable_to_non_nullable
-              as String,
-      mapy: null == mapy
-          ? _value.mapy
-          : mapy // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -188,12 +119,7 @@ class __$$ShelterModelImplCopyWithImpl<$Res>
 class _$ShelterModelImpl implements _ShelterModel {
   const _$ShelterModelImpl(
       {required this.title,
-      required this.category,
-      required this.description,
-      required this.telephone,
-      @JsonKey(name: 'roadAddress') required this.address,
-      required this.mapx,
-      required this.mapy});
+      @JsonKey(name: 'roadAddress') required this.address});
 
   factory _$ShelterModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ShelterModelImplFromJson(json);
@@ -201,22 +127,12 @@ class _$ShelterModelImpl implements _ShelterModel {
   @override
   final String title;
   @override
-  final String category;
-  @override
-  final String description;
-  @override
-  final String telephone;
-  @override
   @JsonKey(name: 'roadAddress')
   final String address;
-  @override
-  final String mapx;
-  @override
-  final String mapy;
 
   @override
   String toString() {
-    return 'ShelterModel(title: $title, category: $category, description: $description, telephone: $telephone, address: $address, mapx: $mapx, mapy: $mapy)';
+    return 'ShelterModel(title: $title, address: $address)';
   }
 
   @override
@@ -225,21 +141,12 @@ class _$ShelterModelImpl implements _ShelterModel {
         (other.runtimeType == runtimeType &&
             other is _$ShelterModelImpl &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.category, category) ||
-                other.category == category) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.telephone, telephone) ||
-                other.telephone == telephone) &&
-            (identical(other.address, address) || other.address == address) &&
-            (identical(other.mapx, mapx) || other.mapx == mapx) &&
-            (identical(other.mapy, mapy) || other.mapy == mapy));
+            (identical(other.address, address) || other.address == address));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, title, category, description,
-      telephone, address, mapx, mapy);
+  int get hashCode => Object.hash(runtimeType, title, address);
 
   /// Create a copy of ShelterModel
   /// with the given fields replaced by the non-null parameter values.
@@ -259,13 +166,9 @@ class _$ShelterModelImpl implements _ShelterModel {
 
 abstract class _ShelterModel implements ShelterModel {
   const factory _ShelterModel(
-      {required final String title,
-      required final String category,
-      required final String description,
-      required final String telephone,
-      @JsonKey(name: 'roadAddress') required final String address,
-      required final String mapx,
-      required final String mapy}) = _$ShelterModelImpl;
+          {required final String title,
+          @JsonKey(name: 'roadAddress') required final String address}) =
+      _$ShelterModelImpl;
 
   factory _ShelterModel.fromJson(Map<String, dynamic> json) =
       _$ShelterModelImpl.fromJson;
@@ -273,18 +176,8 @@ abstract class _ShelterModel implements ShelterModel {
   @override
   String get title;
   @override
-  String get category;
-  @override
-  String get description;
-  @override
-  String get telephone;
-  @override
   @JsonKey(name: 'roadAddress')
   String get address;
-  @override
-  String get mapx;
-  @override
-  String get mapy;
 
   /// Create a copy of ShelterModel
   /// with the given fields replaced by the non-null parameter values.
