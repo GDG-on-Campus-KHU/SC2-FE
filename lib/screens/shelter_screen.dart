@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:sheet/sheet.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:math' show min, max;
 
 import '../utils/model/shelter_model.dart';
 import '../utils/theme/color_manager.dart';
@@ -28,6 +29,8 @@ class _ShelterScreenState extends State<ShelterScreen> {
   CameraPosition? _initialPosition;
 
   double _sheetPosition = 0.5;
+
+  final Set<Polyline> _polylines = {};
 
   @override
   void initState() {
@@ -112,6 +115,10 @@ class _ShelterScreenState extends State<ShelterScreen> {
               mapController = controller;
             },
             myLocationEnabled: true,
+            polylines: _polylines,
+            zoomControlsEnabled: false,
+            zoomGesturesEnabled: true,
+            myLocationButtonEnabled: false,
           ),
         _buildCurrentLocationButton(fabBottom, fixedBottom),
         _buildShelterSheet(),
@@ -154,7 +161,7 @@ class _ShelterScreenState extends State<ShelterScreen> {
               child: Container(
                 width: 32,
                 height: 4,
-                margin: const EdgeInsets.only(top: 8, bottom: 8),
+                margin: const EdgeInsets.only(top: 8, bottom: 16),
                 decoration: BoxDecoration(
                   color: ColorManager.card,
                   borderRadius: BorderRadius.circular(2),
@@ -165,7 +172,7 @@ class _ShelterScreenState extends State<ShelterScreen> {
               '인근 대피소',
               style: TextManager.main23,
             ),
-            const SizedBox(height: 28),
+            const SizedBox(height: 48),
             Expanded(
               child: ListView.builder(
                 itemCount: _shelters.length,
@@ -188,42 +195,45 @@ class _ShelterScreenState extends State<ShelterScreen> {
     required String name,
     required String address,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Row(
-        children: [
-          Container(
-            width: 52,
-            height: 52,
-            margin: const EdgeInsets.only(right: 16),
-            decoration: BoxDecoration(
-              color: ColorManager.card,
-              borderRadius: BorderRadius.circular(8),
+    return GestureDetector(
+      onTap: () => _fetchAndDrawRoute(),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        child: Row(
+          children: [
+            Container(
+              width: 52,
+              height: 52,
+              margin: const EdgeInsets.only(right: 16),
+              decoration: BoxDecoration(
+                color: ColorManager.card,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                Symbols.home_rounded,
+                color: ColorManager.mainText,
+                size: 32,
+              ),
             ),
-            child: Icon(
-              Symbols.home_rounded,
-              color: ColorManager.mainText,
-              size: 32,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: TextManager.main19,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    address,
+                    style: TextManager.sub17,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: TextManager.main19,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  address,
-                  style: TextManager.sub17,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -257,5 +267,75 @@ class _ShelterScreenState extends State<ShelterScreen> {
     setState(() {
       _shelters = shelters;
     });
+  }
+
+  Future<void> _fetchAndDrawRoute() async {
+    try {
+      // TODO: Replace with actual API call
+      final response = {
+        "start": [127.027618, 37.497968],
+        "goal": [127.0646402, 37.2497394],
+        "path": [
+          [127.0583539, 37.248289],
+          [127.0585089, 37.3481931],
+          [127.058517, 37.248158]
+        ]
+      };
+
+      // Create complete route including start, path, and goal
+      final List<LatLng> polylineCoordinates = [
+        // Add start point
+        LatLng(
+          (response['start'] as List)[1] as double,
+          (response['start'] as List)[0] as double,
+        ),
+        // Add path points (stopovers)
+        ...(response['path'] as List).map((point) => LatLng(
+              point[1] as double,
+              point[0] as double,
+            )),
+        // Add goal point
+        LatLng(
+          (response['goal'] as List)[1] as double,
+          (response['goal'] as List)[0] as double,
+        ),
+      ];
+
+      final Polyline polyline = Polyline(
+        polylineId: const PolylineId('route'),
+        color: ColorManager.button,
+        points: polylineCoordinates,
+        width: 4,
+      );
+
+      setState(() {
+        _polylines.clear();
+        _polylines.add(polyline);
+      });
+
+      // Animate camera to show the route
+      final LatLngBounds bounds = _getBounds(polylineCoordinates);
+      await mapController?.animateCamera(
+        CameraUpdate.newLatLngBounds(bounds, 50),
+      );
+    } catch (e) {
+      debugPrint('Error drawing route: $e');
+    }
+  }
+
+  LatLngBounds _getBounds(List<LatLng> coordinates) {
+    double? minLat, maxLat, minLng, maxLng;
+
+    for (final coord in coordinates) {
+      minLat = minLat == null ? coord.latitude : min(minLat, coord.latitude);
+      maxLat = maxLat == null ? coord.latitude : max(maxLat, coord.latitude);
+      minLng = minLng == null ? coord.longitude : min(minLng, coord.longitude);
+      maxLng = maxLng == null ? coord.longitude : max(maxLng, coord.longitude);
+    }
+
+    return LatLngBounds(
+      southwest: LatLng(minLat!, minLng!),
+      northeast: LatLng(maxLat!, maxLng!),
+    );
   }
 }
