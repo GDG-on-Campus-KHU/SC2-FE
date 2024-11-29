@@ -23,7 +23,6 @@ class ShelterScreen extends StatefulWidget {
 class _ShelterScreenState extends State<ShelterScreen> {
   final RouteService _routeService = RouteService();
   final ShelterService _shelterService = ShelterService();
-  List<ShelterModel> _shelters = [];
 
   final SheetController sheetController = SheetController();
 
@@ -41,7 +40,6 @@ class _ShelterScreenState extends State<ShelterScreen> {
   void initState() {
     super.initState();
     sheetController.addListener(_onSheetChanged);
-    _loadShelters();
     Future<void>.delayed(const Duration(milliseconds: 300), () {
       animateSheet();
       _goToCurrentLocation();
@@ -179,13 +177,42 @@ class _ShelterScreenState extends State<ShelterScreen> {
             ),
             const SizedBox(height: 48),
             Expanded(
-              child: ListView.builder(
-                itemCount: _shelters.length,
-                itemBuilder: (context, index) {
-                  final shelter = _shelters[index];
-                  return shelterCard(
-                    name: shelter.title,
-                    address: shelter.address,
+              child: FutureBuilder<List<ShelterModel>>(
+                future: _shelterService.fetchShelters(
+                    '서울 역삼동 대피소'), // modify search query in the future, hard coding it for now
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        'Error loading shelters: ${snapshot.error}',
+                        style: TextManager.sub17,
+                      ),
+                    );
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'No shelters found',
+                        style: TextManager.sub17,
+                      ),
+                    );
+                  }
+
+                  final shelters = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: shelters.length,
+                    itemBuilder: (context, index) {
+                      final shelter = shelters[index];
+                      return shelterCard(
+                        name: shelter.title,
+                        address: shelter.address,
+                      );
+                    },
                   );
                 },
               ),
@@ -266,13 +293,6 @@ class _ShelterScreenState extends State<ShelterScreen> {
       setState(() {});
       debugPrint('Error getting location: $e');
     }
-  }
-
-  Future<void> _loadShelters() async {
-    final shelters = await _shelterService.fetchShelters();
-    setState(() {
-      _shelters = shelters;
-    });
   }
 
   Future<void> _fetchAndDrawRoute({

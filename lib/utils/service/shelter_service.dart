@@ -1,29 +1,29 @@
 import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
 import '../model/shelter_model.dart';
+import 'package:http/http.dart' as http;
 
 class ShelterService {
-  Future<List<ShelterModel>> fetchShelters() async {
+  Future<List<ShelterModel>> fetchShelters(String query) async {
     try {
-      final String response =
-          await rootBundle.loadString('assets/dummy/shelter.json');
-      final data = json.decode(response);
+      // maybe there's no need to encode the query. change in the future if needed, or hard code it.
+      final encodedQuery = Uri.encodeComponent(query.trim());
+      final uri = Uri.parse(
+          'http://localhost:8080/api/map/search?query="$encodedQuery"');
 
-      if (data['items'] == null) {
-        print('Warning: items key is null or missing');
-        return [];
+      final response = await http.get(uri);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonList = json.decode(response.body);
+        return jsonList.map((json) => ShelterModel.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to fetch route: ${response.statusCode}');
+        // print('Error: HTTP ${response.statusCode}');
+        // return [];
       }
-
-      final sheltersList = data['items'] as List;
-      List<ShelterModel> shelters = sheltersList
-          .map((shelter) => ShelterModel.fromJson(shelter))
-          .toList();
-
-      return shelters;
-    } catch (e, stackTrace) {
-      print('Error in fetchShelters: $e');
-      print('Stack trace: $stackTrace');
-      return [];
+    } catch (e) {
+      throw Exception('Error fetching route: $e');
+      // print('Error in searchShelters: $e');
+      // return [];
     }
   }
 }
